@@ -55,7 +55,7 @@ export default function Contact() {
                 <ContactRow icon={<FiMail />} label="Email" value={profile.email} href={`mailto:${profile.email}`} />
                 <ContactRow icon={<FiMapPin />} label="Location" value={profile.location} />
                 <ContactRow icon={<FiGithub />} label="GitHub" value="@vardhacr" href={profile.github} />
-                <ContactRow icon={<FiLinkedin />} label="LinkedIn" value="Jyothi Vardhan" href={profile.linkedin} />
+                <ContactRow icon={<FiLinkedin />} label="LinkedIn" value="Bonumuddula Jyothi Vardhan" href={profile.linkedin}/>
               </div>
               <p className="font-mono text-xs text-muted mt-10 pt-6 border-t border-border">
                 // usually responds within 24–48 hours
