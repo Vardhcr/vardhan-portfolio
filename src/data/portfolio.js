@@ -6,7 +6,7 @@ export const profile = {
   graduation: "2028",
   location: "Visakhapatnam, Andhra Pradesh, India",
   email: "324103383009@gvpce.ac.in",
-  linkedin: "https://www.linkedin.com/in/vardhan-bonumuddula-b872b3326/",
+  linkedin: "https://www.linkedin.com/in/jyothivardhan-bonumuddula-b872b3326/", 
   github: "https://github.com/vardhacr",
   taglines: ["Software Engineer", "AI Enthusiast", "Cloud Learner", "Problem Solver"],
   summary:
