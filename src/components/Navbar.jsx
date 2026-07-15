@@ -37,7 +37,7 @@ export default function Navbar() {
     >
       <nav className="mx-auto max-w-6xl px-5 sm:px-8 flex items-center justify-between h-16">
         <NavLink to="/" className="font-mono text-sm sm:text-base font-semibold tracking-tight text-text">
-          <span className="text-accent">~/</span>jvardhan
+          <span className="text-accent">~/</span>jyothivardhan
           <span className="blink-cursor h-4 align-middle" />
         </NavLink>
 
