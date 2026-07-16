@@ -33,29 +33,33 @@ export const goals = [
 
 export const skills = {
   Programming: [
-    { name: "Python", level: 85 },
-    { name: "C", level: 75 },
-    { name: "JavaScript", level: 80 },
-  ],
-  Frontend: [
-    { name: "React", level: 78 },
-    { name: "Vite", level: 75 },
-    { name: "Tailwind CSS", level: 80 },
-    { name: "HTML / CSS", level: 85 },
-  ],
-  Backend: [
-    { name: "FastAPI", level: 72 },
-    { name: "REST APIs", level: 78 },
-    { name: "SQL", level: 74 },
-  ],
-  Cloud: [
-    { name: "AWS", level: 65 },
-  ],
-  Tools: [
-    { name: "Git", level: 80 },
-    { name: "GitHub", level: 82 },
-    { name: "VS Code", level: 88 },
-  ],
+  { name: "Python", level: 85 },
+  { name: "C", level: 75 },
+  { name: "JavaScript", level: 80 },
+],
+
+Frontend: [
+  { name: "React", level: 80 },
+  { name: "Vite", level: 85 },
+  { name: "Tailwind CSS", level: 82 },
+  { name: "HTML / CSS", level: 90 },
+],
+
+Backend: [
+  { name: "FastAPI", level: 80 },
+  { name: "REST APIs", level: 82 },
+  { name: "SQL", level: 75 },
+],
+
+Cloud: [
+  { name: "AWS", level: 95 },
+],
+
+Tools: [
+  { name: "Git", level: 85 },
+  { name: "GitHub", level: 90 },
+  { name: "VS Code", level: 95 },
+],
 };
 
 export const coreConcepts = ["Data Structures & Algorithms", "Object-Oriented Programming", "REST API Design"];
