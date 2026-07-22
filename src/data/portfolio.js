@@ -5,7 +5,7 @@ export const profile = {
   college: "Gayatri Vidya Parishad College of Engineering (Autonomous)",
   graduation: "2028",
   location: "Visakhapatnam, Andhra Pradesh, India",
-  email: "324103383009@gvpce.ac.in",
+  email: "saibonu005@gmail.com",
   linkedin: "https://www.linkedin.com/in/jyothivardhan-bonumuddula-b872b3326/",
   github: "https://github.com/vardhacr",
   taglines: [
