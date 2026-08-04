@@ -88,13 +88,27 @@ export default function Home() {
 
           <Reveal direction="right" delay={0.15}>
             <div className="glass-strong rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
-              <div className="flex items-center gap-1.5 px-4 py-3 border-b border-border bg-white/[0.02]">
-                <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
-                <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-                <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
-                <span className="ml-3 font-mono text-xs text-muted">vardhan.py</span>
+              <div className="relative aspect-[4/5] overflow-hidden">
+                <img
+                  src="/images/jyothi-vardhan.png"
+                  alt={`Portrait of ${profile.name}`}
+                  className="h-full w-full object-cover object-[50%_24%]"
+                />
+                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-bg via-bg/35 to-transparent" />
+                <div className="absolute inset-x-5 bottom-5">
+                  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-bg/65 px-3 py-1.5 font-mono text-xs text-slate-100 backdrop-blur-md">
+                    <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
+                    Building what’s next
+                  </div>
+                  <p className="font-display text-xl font-semibold text-white">{profile.firstName}</p>
+                  <p className="mt-1 font-mono text-xs text-slate-300">{profile.location}</p>
+                </div>
               </div>
-              <pre className="font-mono text-[13px] sm:text-sm leading-relaxed p-6 overflow-x-auto">
+              <div className="flex items-center justify-between px-5 py-3 border-t border-border bg-white/[0.02]">
+                <span className="font-mono text-xs text-muted">vardhan.dev</span>
+                <span className="font-mono text-xs text-accent">&lt;/&gt;</span>
+              </div>
+              <pre className="hidden font-mono text-[13px] sm:text-sm leading-relaxed p-6 overflow-x-auto">
 <code>
 <span className="text-secondary">class</span> <span className="text-accent">Engineer</span>:
 {"\n    "}<span className="text-secondary">def</span> <span className="text-primary">__init__</span>(self):
