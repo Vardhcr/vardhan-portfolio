@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
+let rippleId = 0;
+
 export default function CursorGlow() {
-  const ref = useRef(null);
+  const glowRef = useRef(null);
+  const ripplesRef = useRef([]);
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -9,23 +12,44 @@ export default function CursorGlow() {
     const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
     setEnabled(mq.matches);
 
-    const onMove = (e) => {
-      if (!ref.current) return;
-      // Smoothly follow the cursor with a trailing feel.
-      ref.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+    const spawnRipple = (x, y) => {
+      const el = document.createElement("span");
+      el.className = "cursor-ripple";
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      document.body.appendChild(el);
+      ripplesRef.current.push(el);
+      // Remove after animation completes to keep the DOM clean.
+      setTimeout(() => {
+        el.remove();
+        ripplesRef.current = ripplesRef.current.filter((r) => r !== el);
+      }, 1400);
+    };
 
-      // Detect if hovering an interactive element -> intensify the glow.
-      const el = e.target;
-      const interactive = el && el.closest
-        ? el.closest("a, button, [role='button'], input, textarea, select, .glow-border, .glass")
-        : null;
-      ref.current.style.opacity = interactive ? "1" : "0.55";
+    const onMove = (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      if (glowRef.current) {
+        glowRef.current.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+        const el = e.target;
+        const interactive = el && el.closest
+          ? el.closest("a, button, [role='button'], input, textarea, select, .glow-border, .glass")
+          : null;
+        glowRef.current.style.opacity = interactive ? "1" : "0.5";
+      }
+      // Spawn a ripple periodically (throttled by time) to emulate water waves.
+      const now = Date.now();
+      if (!spawnRipple.last || now - spawnRipple.last > 90) {
+        spawnRipple.last = now;
+        spawnRipple(x, y);
+      }
+      rippleId += 1;
     };
     const onEnter = () => {
-      if (ref.current) ref.current.style.opacity = "1";
+      if (glowRef.current) glowRef.current.style.opacity = "1";
     };
     const onLeave = () => {
-      if (ref.current) ref.current.style.opacity = "0";
+      if (glowRef.current) glowRef.current.style.opacity = "0";
     };
 
     if (mq.matches) {
@@ -38,10 +62,12 @@ export default function CursorGlow() {
       window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseenter", onEnter);
       document.removeEventListener("mouseleave", onLeave);
+      ripplesRef.current.forEach((r) => r.remove());
+      ripplesRef.current = [];
     };
   }, []);
 
   if (!enabled) return null;
 
-  return <div ref={ref} className="cursor-glow-indicator" aria-hidden="true" />;
+  return <div ref={glowRef} className="cursor-glow-indicator" aria-hidden="true" />;
 }
