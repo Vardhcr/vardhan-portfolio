@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { FiGithub, FiLinkedin, FiArrowRight, FiDownload, FiMail, FiCloud, FiGithub as GhIcon } from "react-icons/fi";
 import { SiPython, SiReact, SiFastapi } from "react-icons/si";
 import TypingText from "../components/TypingText";
@@ -25,6 +25,23 @@ export default function Home() {
   const { scrollY } = useScroll();
   const portraitY = useTransform(scrollY, [0, 400], [0, -24]);
   const portraitRotate = useTransform(scrollY, [0, 400], [0, 3]);
+
+  // Touch tilt for the portrait (mobile "sensor" interaction)
+  const pmx = useMotionValue(0.5);
+  const pmy = useMotionValue(0.5);
+  const portraitRotateX = useSpring(useTransform(pmy, [0, 1], [8, -8]), { stiffness: 200, damping: 20 });
+  const portraitRotateY = useSpring(useTransform(pmx, [0, 1], [-8, 8]), { stiffness: 200, damping: 20 });
+
+  const handlePortraitTouchMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const touch = e.touches[0];
+    pmx.set((touch.clientX - rect.left) / rect.width);
+    pmy.set((touch.clientY - rect.top) / rect.height);
+  };
+  const resetPortraitTilt = () => {
+    pmx.set(0.5);
+    pmy.set(0.5);
+  };
 
   return (
     <>
@@ -94,43 +111,50 @@ export default function Home() {
           </div>
 
           <Reveal direction="right" delay={0.15}>
-            <motion.div style={{ y: portraitY, rotate: portraitRotate }} className="glass-strong rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <img
-                  src="/images/jyothi-vardhan.png"
-                  alt={`Portrait of ${profile.name}`}
-                  className="h-full w-full object-cover object-[50%_24%]"
-                />
-                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-bg via-bg/35 to-transparent" />
-                <div className="absolute inset-x-5 bottom-5">
-                  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-bg/65 px-3 py-1.5 font-mono text-xs text-slate-100 backdrop-blur-md">
-                    <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
-                    Building what's next
+<motion.div
+              style={{ y: portraitY, rotate: portraitRotate, rotateX: portraitRotateX, rotateY: portraitRotateY, transformPerspective: 1000 }}
+              className="relative mx-auto w-full max-w-sm cursor-pointer"
+              onTouchMove={handlePortraitTouchMove}
+              onTouchEnd={resetPortraitTilt}
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                pmx.set((e.clientX - rect.left) / rect.width);
+                pmy.set((e.clientY - rect.top) / rect.height);
+              }}
+              onMouseLeave={resetPortraitTilt}
+            >
+              {/* Glow behind the figure */}
+              <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-tr from-primary/40 via-secondary/30 to-accent/30 opacity-60 blur-2xl" />
+
+              {/* Organic standing-portrait frame */}
+              <div className="relative overflow-hidden rounded-[2rem] rounded-tl-[6rem] border border-white/10 shadow-2xl shadow-black/50">
+                <div className="relative aspect-[4/5]">
+                  <img
+                    src="/images/jyothi-vardhan.png"
+                    alt={`Portrait of ${profile.name}`}
+                    className="h-full w-full object-cover object-[50%_10%]"
+                  />
+                  {/* grounded gradient */}
+                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg via-bg/25 to-transparent" />
+                  {/* nameplate */}
+                  <div className="absolute inset-x-4 bottom-4">
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-bg/70 px-3 py-1.5 font-mono text-xs text-slate-100 backdrop-blur-md">
+                      <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
+                      Building what's next
+                    </div>
+                    <p className="font-display text-xl font-semibold text-white drop-shadow">{profile.firstName}</p>
+                    <p className="mt-1 font-mono text-xs text-slate-300">{profile.location}</p>
                   </div>
-                  <p className="font-display text-xl font-semibold text-white">{profile.firstName}</p>
-                  <p className="mt-1 font-mono text-xs text-slate-300">{profile.location}</p>
                 </div>
               </div>
-              <div className="flex items-center justify-between px-5 py-3 border-t border-border bg-white/[0.02]">
-                <span className="font-mono text-xs text-muted">vardhan.dev</span>
-<span className="font-mono text-xs text-accent">{"</>"}</span>
+
+              {/* floating accent chips on the frame */}
+              <div className="absolute -left-4 top-10 float-anim rounded-xl glass-strong px-3 py-2 font-mono text-xs text-accent shadow-lg">
+                ~ available &#10003;
               </div>
-              <pre className="hidden font-mono text-[13px] sm:text-sm leading-relaxed p-6 overflow-x-auto">
-                <code>
-                  <span className="text-secondary">class</span> <span className="text-accent">Engineer</span>:
-                  {"\n    "}<span className="text-secondary">def</span> <span className="text-primary">__init__</span>(self):
-                  {"\n        "}self.name = <span className="text-green-300">"{profile.name}"</span>
-                  {"\n        "}self.role = <span className="text-green-300">"{profile.role}"</span>
-                  {"\n        "}self.based_in = <span className="text-green-300">"{profile.location.split(",")[0]}"</span>
-                  {"\n        "}self.focus = [
-                  {"\n            "}<span className="text-green-300">"Backend Dev"</span>,
-                  {"\n            "}<span className="text-green-300">"Applied AI"</span>,
-                  {"\n            "}<span className="text-green-300">"Cloud Systems"</span>,
-                  {"\n        "}]
-                  {"\n\n    "}<span className="text-secondary">def</span> <span className="text-primary">ship</span>(self):
-                  {"\n        "}<span className="text-secondary">return</span> <span className="text-green-300">"always learning ⚡"</span>
-                </code>
-              </pre>
+              <div className="absolute -right-3 bottom-16 float-anim rounded-xl glass-strong px-3 py-2 font-mono text-xs text-slate-200 shadow-lg" style={{ animationDelay: "1.5s" }}>
+                {profile.graduation} &#183; B.Tech
+              </div>
             </motion.div>
           </Reveal>
         </div>

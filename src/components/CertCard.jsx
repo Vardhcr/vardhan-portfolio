@@ -6,7 +6,8 @@ export default function CertCard({ cert, index }) {
   return (
     <Reveal delay={index * 0.06}>
       <motion.div
-        whileHover={{ y: -6 }}
+whileHover={{ y: -6 }}
+        whileTap={{ y: -2, scale: 0.98 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
 className="glass rounded-xl p-6 h-full glow-border shine flex flex-col group"
       >

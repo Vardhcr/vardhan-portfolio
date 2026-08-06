@@ -7,7 +7,8 @@ export default function SkillCard({ skill, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
-      whileHover={{ y: -4 }}
+whileHover={{ y: -4 }}
+      whileTap={{ y: -2, scale: 0.98 }}
       className="glass rounded-xl p-5 glow-border shine group"
     >
       <div className="flex items-center justify-between mb-3">

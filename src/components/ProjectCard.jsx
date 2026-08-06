@@ -12,10 +12,23 @@ export default function ProjectCard({ project, index }) {
   const rotateX = useSpring(useTransform(my, [0, 1], [6, -6]), { stiffness: 200, damping: 20 });
   const rotateY = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 200, damping: 20 });
 
-  const handleMove = (e) => {
+const handleMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     mx.set((e.clientX - rect.left) / rect.width);
     my.set((e.clientY - rect.top) / rect.height);
+  };
+
+  // Touch support: tilt the card as a finger drags across it (mobile "sensor" feel)
+  const handleTouchMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const touch = e.touches[0];
+    mx.set((touch.clientX - rect.left) / rect.width);
+    my.set((touch.clientY - rect.top) / rect.height);
+  };
+
+  const resetTilt = () => {
+    mx.set(0.5);
+    my.set(0.5);
   };
 
   return (
@@ -24,11 +37,10 @@ export default function ProjectCard({ project, index }) {
         <motion.div
           className="group relative rounded-2xl glow-border glass overflow-hidden h-full flex flex-col"
           style={{ rotateX, rotateY, transformPerspective: 1000 }}
-          onMouseMove={handleMove}
-          onMouseLeave={() => {
-            mx.set(0.5);
-            my.set(0.5);
-          }}
+onMouseMove={handleMove}
+          onMouseLeave={resetTilt}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={resetTilt}
         >
           <div className="relative h-44 flex items-center justify-center bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 border-b border-border overflow-hidden shine">
             <div className="absolute inset-0 bg-grid opacity-40" />
