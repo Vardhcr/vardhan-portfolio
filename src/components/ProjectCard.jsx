@@ -5,43 +5,72 @@ import Reveal from "./Reveal";
 
 export default function ProjectCard({ project, index }) {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(false);
 
-  // Hover tilt
+  // Hover/touch tilt
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
-  const rotateX = useSpring(useTransform(my, [0, 1], [6, -6]), { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 200, damping: 20 });
+  const rotateX = useSpring(useTransform(my, [0, 1], [5, -5]), { stiffness: 180, damping: 18 });
+  const rotateY = useSpring(useTransform(mx, [0, 1], [-5, 5]), { stiffness: 180, damping: 18 });
 
-const handleMove = (e) => {
+  // Spotlight glow that follows the pointer/finger
+  const spotX = useMotionValue(50);
+  const spotY = useMotionValue(50);
+  const spotBackground = useTransform(
+    [spotX, spotY],
+    ([x, y]) => `radial-gradient(320px circle at ${x}% ${y}%, rgba(37,99,235,0.18), rgba(6,182,212,0.08) 40%, transparent 70%)`
+  );
+
+  const handleMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
     mx.set((e.clientX - rect.left) / rect.width);
     my.set((e.clientY - rect.top) / rect.height);
+    spotX.set(x);
+    spotY.set(y);
   };
 
   // Touch support: tilt the card as a finger drags across it (mobile "sensor" feel)
+  const handleTouchStart = () => setActive(true);
   const handleTouchMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const touch = e.touches[0];
     mx.set((touch.clientX - rect.left) / rect.width);
     my.set((touch.clientY - rect.top) / rect.height);
+    spotX.set(((touch.clientX - rect.left) / rect.width) * 100);
+    spotY.set(((touch.clientY - rect.top) / rect.height) * 100);
   };
 
   const resetTilt = () => {
     mx.set(0.5);
     my.set(0.5);
+    spotX.set(50);
+    spotY.set(50);
+    setActive(false);
   };
 
   return (
     <>
       <Reveal delay={index * 0.08} direction={index % 2 === 0 ? "up" : "up"}>
         <motion.div
-          className="group relative rounded-2xl glow-border glass overflow-hidden h-full flex flex-col"
+          className="group relative rounded-2xl glow-border glass overflow-hidden h-full flex flex-col card-touch"
           style={{ rotateX, rotateY, transformPerspective: 1000 }}
-onMouseMove={handleMove}
+          onMouseMove={handleMove}
+          onMouseEnter={() => setActive(true)}
           onMouseLeave={resetTilt}
+          onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={resetTilt}
         >
+          {/* Spotlight that follows the pointer/finger */}
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 transition-opacity duration-300"
+            animate={{ opacity: active ? 1 : 0 }}
+            style={{ background: spotBackground }}
+          />
+
           <div className="relative h-44 flex items-center justify-center bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 border-b border-border overflow-hidden shine">
             <div className="absolute inset-0 bg-grid opacity-40" />
             <FiCode className="relative text-5xl text-text/25 transition-all duration-300 group-hover:scale-110 group-hover:text-accent/50" />
@@ -50,7 +79,7 @@ onMouseMove={handleMove}
             </span>
           </div>
 
-          <div className="p-6 flex flex-col flex-1">
+          <div className="p-6 flex flex-col flex-1 relative">
             <h3 className="font-display text-xl font-semibold group-hover:text-accent transition-colors">{project.title}</h3>
             <p className="text-sm text-muted mt-1">{project.tagline}</p>
 

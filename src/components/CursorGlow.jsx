@@ -11,7 +11,15 @@ export default function CursorGlow() {
 
     const onMove = (e) => {
       if (!ref.current) return;
+      // Smoothly follow the cursor with a trailing feel.
       ref.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+
+      // Detect if hovering an interactive element -> intensify the glow.
+      const el = e.target;
+      const interactive = el && el.closest
+        ? el.closest("a, button, [role='button'], input, textarea, select, .glow-border, .glass")
+        : null;
+      ref.current.style.opacity = interactive ? "1" : "0.55";
     };
     const onEnter = () => {
       if (ref.current) ref.current.style.opacity = "1";

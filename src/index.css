@@ -228,19 +228,25 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 480px;
-  height: 480px;
+  width: 520px;
+  height: 520px;
   border-radius: 9999px;
   pointer-events: none;
   z-index: 1;
-  background: radial-gradient(circle, rgba(37,99,235,0.16), rgba(124,58,237,0.10) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(37,99,235,0.22), rgba(124,58,237,0.14) 40%, rgba(6,182,212,0.06) 62%, transparent 72%);
+  filter: blur(6px);
   transform: translate(-50%, -50%);
   will-change: transform;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.4s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 @media (hover: none), (pointer: coarse) {
   .cursor-glow-indicator { display: none; }
+}
+
+/* ==== Touch-friendly cards: allow vertical scroll, allow horizontal tilt ==== */
+.card-touch {
+  touch-action: pan-y;
 }
 
 @media (prefers-reduced-motion: reduce) {
