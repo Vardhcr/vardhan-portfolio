@@ -22,3 +22,10 @@ Optimize animations for 60 FPS (CSS transforms + Framer Motion only).
 
 ## Nice-to-have (if applicable)
 - [ ] 14. Add subtle staggered transitions on other pages (About, Skills, etc.) via Reveal only (no rewrite).
+
+## Bonus (touch sensors / portrait)
+- [x] Project cards tilt on touch drag (mobile "sensor" feel).
+- [x] Skill cards & cert cards give tactile tap feedback.
+- [x] Hero portrait presented as a natural standing/leaning figure (organic frame, glow, floating chips) instead of a template card.
+- [x] Portrait tilts on touch drag + mouse move.
+I said i
