@@ -1,8 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { FiGithub, FiLinkedin, FiArrowRight, FiDownload, FiMail, FiCloud, FiGithub as GhIcon } from "react-icons/fi";
-import {
-  SiPython, SiReact, SiFastapi,
-} from "react-icons/si";
+import { SiPython, SiReact, SiFastapi } from "react-icons/si";
 import TypingText from "../components/TypingText";
 import Reveal from "../components/Reveal";
 import Button from "../components/Button";
@@ -18,7 +16,16 @@ const floatIcons = [
   { Icon: GhIcon, label: "GitHub", style: "top-[45%] right-[2%]", duration: 10 },
 ];
 
+const marqueeItems = [
+  ...Object.values(skills).flat().map((s) => s.name),
+  "AWS", "FastAPI", "React", "Cloud", "AI", "Data Science", "Backend", "REST APIs",
+];
+
 export default function Home() {
+  const { scrollY } = useScroll();
+  const portraitY = useTransform(scrollY, [0, 400], [0, -24]);
+  const portraitRotate = useTransform(scrollY, [0, 400], [0, 3]);
+
   return (
     <>
       {/* HERO */}
@@ -46,7 +53,7 @@ export default function Home() {
               <h1 className="font-display font-semibold leading-[1.05] text-4xl sm:text-5xl lg:text-6xl">
                 Hi, I'm
                 <br />
-                <span className="text-gradient">{profile.name}</span>
+                <span className="text-gradient-animated">{profile.name.split(" ").slice(-2).join(" ") || profile.name}</span>
               </h1>
             </Reveal>
 
@@ -76,10 +83,10 @@ export default function Home() {
 
             <Reveal delay={0.34}>
               <div className="flex gap-4 mt-8">
-                <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-muted hover:text-accent transition-colors">
+                <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-muted hover:text-accent hover:-translate-y-0.5 transition-all">
                   <FiGithub size={20} />
                 </a>
-                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted hover:text-accent transition-colors">
+                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted hover:text-accent hover:-translate-y-0.5 transition-all">
                   <FiLinkedin size={20} />
                 </a>
               </div>
@@ -87,7 +94,7 @@ export default function Home() {
           </div>
 
           <Reveal direction="right" delay={0.15}>
-            <div className="glass-strong rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
+            <motion.div style={{ y: portraitY, rotate: portraitRotate }} className="glass-strong rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img
                   src="/images/jyothi-vardhan.png"
@@ -98,7 +105,7 @@ export default function Home() {
                 <div className="absolute inset-x-5 bottom-5">
                   <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-bg/65 px-3 py-1.5 font-mono text-xs text-slate-100 backdrop-blur-md">
                     <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
-                    Building what’s next
+                    Building what's next
                   </div>
                   <p className="font-display text-xl font-semibold text-white">{profile.firstName}</p>
                   <p className="mt-1 font-mono text-xs text-slate-300">{profile.location}</p>
@@ -106,33 +113,49 @@ export default function Home() {
               </div>
               <div className="flex items-center justify-between px-5 py-3 border-t border-border bg-white/[0.02]">
                 <span className="font-mono text-xs text-muted">vardhan.dev</span>
-                <span className="font-mono text-xs text-accent">&lt;/&gt;</span>
+<span className="font-mono text-xs text-accent">{"</>"}</span>
               </div>
               <pre className="hidden font-mono text-[13px] sm:text-sm leading-relaxed p-6 overflow-x-auto">
-<code>
-<span className="text-secondary">class</span> <span className="text-accent">Engineer</span>:
-{"\n    "}<span className="text-secondary">def</span> <span className="text-primary">__init__</span>(self):
-{"\n        "}self.name = <span className="text-green-300">"{profile.name}"</span>
-{"\n        "}self.role = <span className="text-green-300">"{profile.role}"</span>
-{"\n        "}self.based_in = <span className="text-green-300">"{profile.location.split(",")[0]}"</span>
-{"\n        "}self.focus = [
-{"\n            "}<span className="text-green-300">"Backend Dev"</span>,
-{"\n            "}<span className="text-green-300">"Applied AI"</span>,
-{"\n            "}<span className="text-green-300">"Cloud Systems"</span>,
-{"\n        "}]
-{"\n\n    "}<span className="text-secondary">def</span> <span className="text-primary">ship</span>(self):
-{"\n        "}<span className="text-secondary">return</span> <span className="text-green-300">"always learning ⚡"</span>
-</code>
+                <code>
+                  <span className="text-secondary">class</span> <span className="text-accent">Engineer</span>:
+                  {"\n    "}<span className="text-secondary">def</span> <span className="text-primary">__init__</span>(self):
+                  {"\n        "}self.name = <span className="text-green-300">"{profile.name}"</span>
+                  {"\n        "}self.role = <span className="text-green-300">"{profile.role}"</span>
+                  {"\n        "}self.based_in = <span className="text-green-300">"{profile.location.split(",")[0]}"</span>
+                  {"\n        "}self.focus = [
+                  {"\n            "}<span className="text-green-300">"Backend Dev"</span>,
+                  {"\n            "}<span className="text-green-300">"Applied AI"</span>,
+                  {"\n            "}<span className="text-green-300">"Cloud Systems"</span>,
+                  {"\n        "}]
+                  {"\n\n    "}<span className="text-secondary">def</span> <span className="text-primary">ship</span>(self):
+                  {"\n        "}<span className="text-secondary">return</span> <span className="text-green-300">"always learning ⚡"</span>
+                </code>
               </pre>
-            </div>
+            </motion.div>
           </Reveal>
+        </div>
+      </Section>
+
+      {/* TECH MARQUEE */}
+      <Section className="pt-0 pb-20">
+        <div className="marquee-mask marquee glass rounded-2xl py-4 overflow-hidden">
+          <div className="marquee-track">
+            {[...marqueeItems, ...marqueeItems].map((item, i) => (
+              <span
+                key={i}
+                className="flex items-center gap-3 px-6 font-mono text-sm text-muted whitespace-nowrap"
+              >
+                <span className="text-accent">▹</span> {item}
+              </span>
+            ))}
+          </div>
         </div>
       </Section>
 
       {/* QUICK STATS / OBJECTIVE STRIP */}
       <Section className="pt-0 pb-20">
         <Reveal>
-          <div className="glass rounded-2xl p-8 sm:p-10 grid sm:grid-cols-3 gap-8">
+          <div className="glass rounded-2xl p-8 sm:p-10 grid sm:grid-cols-3 gap-8 glow-border">
             <div className="sm:col-span-2">
               <Eyebrow>cat objective.md</Eyebrow>
               <p className="text-muted leading-relaxed">{profile.objective}</p>
@@ -171,7 +194,7 @@ export default function Home() {
         <div className="flex flex-wrap gap-3">
           {Object.values(skills).flat().map((s, i) => (
             <Reveal key={s.name} delay={i * 0.03} direction="up" className="inline-block">
-              <span className="font-mono text-sm px-4 py-2 rounded-full glass hover:border-accent/50 hover:text-accent transition-colors">
+              <span className="font-mono text-sm px-4 py-2 rounded-full glass hover:border-accent/50 hover:text-accent hover:-translate-y-0.5 transition-all">
                 {s.name}
               </span>
             </Reveal>

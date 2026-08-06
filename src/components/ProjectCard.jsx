@@ -1,32 +1,59 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { FiGithub, FiExternalLink, FiX, FiCode } from "react-icons/fi";
 import Reveal from "./Reveal";
 
 export default function ProjectCard({ project, index }) {
   const [open, setOpen] = useState(false);
 
+  // Hover tilt
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+  const rotateX = useSpring(useTransform(my, [0, 1], [6, -6]), { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 200, damping: 20 });
+
+  const handleMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width);
+    my.set((e.clientY - rect.top) / rect.height);
+  };
+
   return (
     <>
       <Reveal delay={index * 0.08} direction={index % 2 === 0 ? "up" : "up"}>
-        <div className="group relative rounded-2xl glow-border glass overflow-hidden h-full flex flex-col">
-          <div className="relative h-44 flex items-center justify-center bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 border-b border-border overflow-hidden">
+        <motion.div
+          className="group relative rounded-2xl glow-border glass overflow-hidden h-full flex flex-col"
+          style={{ rotateX, rotateY, transformPerspective: 1000 }}
+          onMouseMove={handleMove}
+          onMouseLeave={() => {
+            mx.set(0.5);
+            my.set(0.5);
+          }}
+        >
+          <div className="relative h-44 flex items-center justify-center bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/10 border-b border-border overflow-hidden shine">
             <div className="absolute inset-0 bg-grid opacity-40" />
-            <FiCode className="relative text-5xl text-text/25 group-hover:text-accent/50 transition-colors duration-300" />
+            <FiCode className="relative text-5xl text-text/25 transition-all duration-300 group-hover:scale-110 group-hover:text-accent/50" />
             <span className="absolute top-3 right-3 font-mono text-[11px] px-2 py-1 rounded-full glass-strong text-accent">
               {project.status}
             </span>
           </div>
 
           <div className="p-6 flex flex-col flex-1">
-            <h3 className="font-display text-xl font-semibold">{project.title}</h3>
+            <h3 className="font-display text-xl font-semibold group-hover:text-accent transition-colors">{project.title}</h3>
             <p className="text-sm text-muted mt-1">{project.tagline}</p>
 
             <div className="flex flex-wrap gap-2 mt-4">
-              {project.tech.map((t) => (
-                <span key={t} className="font-mono text-[11px] px-2.5 py-1 rounded-full border border-border text-muted">
+              {project.tech.map((t, ti) => (
+                <motion.span
+                  key={t}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 + ti * 0.04 }}
+                  className="font-mono text-[11px] px-2.5 py-1 rounded-full border border-border text-muted group-hover:border-accent/30 group-hover:text-accent/80 transition-colors"
+                >
                   {t}
-                </span>
+                </motion.span>
               ))}
             </div>
 
@@ -58,7 +85,7 @@ export default function ProjectCard({ project, index }) {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
       </Reveal>
 
       <AnimatePresence>
@@ -81,7 +108,7 @@ export default function ProjectCard({ project, index }) {
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close"
-                className="absolute top-4 right-4 text-muted hover:text-text"
+                className="absolute top-4 right-4 text-muted hover:text-text transition-colors"
               >
                 <FiX size={20} />
               </button>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { FiMenu, FiX } from "react-icons/fi";
 
 const links = [
@@ -19,9 +19,12 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -35,8 +38,14 @@ export default function Navbar() {
         scrolled ? "glass-strong shadow-lg shadow-black/20" : "bg-transparent"
       }`}
     >
+      {/* Scroll progress bar */}
+      <motion.div
+        className="absolute top-0 left-0 right-0 h-[2px] origin-left bg-gradient-to-r from-primary via-secondary to-accent"
+        style={{ scaleX: progress }}
+      />
+
       <nav className="mx-auto max-w-6xl px-5 sm:px-8 flex items-center justify-between h-16">
-        <NavLink to="/" className="font-mono text-sm sm:text-base font-semibold tracking-tight text-text">
+        <NavLink to="/" className="font-mono text-sm sm:text-base font-semibold tracking-tight text-text hover:text-accent transition-colors">
           <span className="text-accent">~/</span>jyothivardhan
           <span className="blink-cursor h-4 align-middle" />
         </NavLink>
@@ -72,7 +81,7 @@ export default function Navbar() {
         <button
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden text-text p-2 -mr-2"
+          className="md:hidden text-text p-2 -mr-2 hover:text-accent transition-colors"
         >
           {open ? <FiX size={22} /> : <FiMenu size={22} />}
         </button>
@@ -93,7 +102,9 @@ export default function Navbar() {
                   to={l.to}
                   end={l.to === "/"}
                   className={({ isActive }) =>
-                    `block px-6 py-3 ${isActive ? "text-accent" : "text-muted"}`
+                    `block px-6 py-3 ${
+                      isActive ? "text-accent bg-white/5" : "text-muted hover:text-text hover:bg-white/5"
+                    } transition-colors`
                   }
                 >
                   {l.label}

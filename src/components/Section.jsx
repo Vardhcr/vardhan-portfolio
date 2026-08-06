@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Reveal from "./Reveal";
 
 export function Eyebrow({ children }) {
@@ -12,8 +13,17 @@ export function SectionHeading({ eyebrow, title, subtitle }) {
   return (
     <Reveal>
       <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight">{title}</h2>
-      {subtitle && <p className="text-muted mt-3 max-w-2xl leading-relaxed">{subtitle}</p>}
+      <h2 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight relative inline-block">
+        {title}
+        <motion.span
+          className="absolute -bottom-2 left-0 h-[3px] rounded-full bg-gradient-to-r from-primary via-secondary to-accent"
+          initial={{ width: 0 }}
+          whileInView={{ width: "100%" }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </h2>
+      {subtitle && <p className="text-muted mt-5 max-w-2xl leading-relaxed">{subtitle}</p>}
     </Reveal>
   );
 }
