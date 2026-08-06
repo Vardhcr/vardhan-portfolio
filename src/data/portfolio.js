@@ -77,24 +77,23 @@ export const projects = [
     id: "resumetic",
 
     title: "RESUMETIC – AI Resume Analyzer & Career Assistant",
-
     tagline:
-      "Production-ready AI-powered Resume Analyzer deployed with React, FastAPI, Railway & Netlify.",
+      "Production-ready AI-powered Resume Analyzer deployed with React, FastAPI, Render & Vercel.",
 
     description:
-      "RESUMETIC is a production-ready AI Resume Analyzer that evaluates ATS compatibility, parses PDF resumes, extracts technical skills, analyzes resume sections, detects missing information, generates AI-powered recommendations, and delivers actionable career insights. The application is deployed using a React frontend on Netlify and a FastAPI backend on Railway.",
-
-    tech: [
-      "React",
-      "Vite",
-      "FastAPI",
-      "Python",
-      "PyMuPDF",
-      "Axios",
-      "GitHub",
-      "Railway",
-      "Netlify",
-    ],
+      "RESUMETIC is a production-ready AI Resume Analyzer that evaluates ATS compatibility, parses PDF resumes, extracts technical skills, analyzes resume sections, detects missing information, generates AI-powered recommendations, and delivers actionable career insights. The application is deployed using a React frontend on Vercel and a FastAPI backend on Render.",
+      tech: 
+      [
+    "React",
+    "Vite",
+    "FastAPI",
+    "Python",
+    "PyMuPDF",
+    "Axios",
+    "GitHub",
+    "Render",
+    "Vercel",
+  ],
 
     features: [
       "ATS Resume Score",
@@ -106,7 +105,7 @@ export const projects = [
       "Missing Section Detection",
       "AI Recommendations",
       "Responsive User Interface",
-      "Cloud Deployment using Railway & Netlify",
+      "Cloud Deployment using Render & Vercel",
     ],
 
     status: "🚀 Production Ready",
@@ -114,7 +113,7 @@ export const projects = [
     github:
       "https://github.com/Vardhcr/resumetic-ai-resume-analyzer",
 
-    demo: "https://resumetic.netlify.app",
+    demo: "https://resumetic-ai-resume-analyzer.vercel.app/",
   },
 
   {
