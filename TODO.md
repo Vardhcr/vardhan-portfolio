@@ -28,4 +28,3 @@ Optimize animations for 60 FPS (CSS transforms + Framer Motion only).
 - [x] Skill cards & cert cards give tactile tap feedback.
 - [x] Hero portrait presented as a natural standing/leaning figure (organic frame, glow, floating chips) instead of a template card.
 - [x] Portrait tilts on touch drag + mouse move.
-I said i
