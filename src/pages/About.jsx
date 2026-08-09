@@ -18,11 +18,11 @@ export default function About() {
         <div className="grid lg:grid-cols-[1fr_1.2fr] gap-14">
           <Reveal direction="left">
             <div className="glass-strong rounded-2xl p-8 sticky top-24">
-              <div className="relative h-24 w-24 overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-lg shadow-primary/20">
+<div className="relative h-24 w-24 overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-lg shadow-primary/20">
                 <img
-                  src="/images/jyothi-vardhan.png"
+                  src="/profile-photo.jpeg"
                   alt={`Portrait of ${profile.name}`}
-                  className="h-full w-full object-cover object-[50%_20%]"
+                  className="h-full w-full object-cover object-[50%_22%]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/25 to-transparent" />
               </div>
