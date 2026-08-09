@@ -128,11 +128,11 @@ export default function Home() {
 
               {/* Organic standing-portrait frame */}
               <div className="relative overflow-hidden rounded-[2rem] rounded-tl-[6rem] border border-white/10 shadow-2xl shadow-black/50">
-                <div className="relative aspect-[4/5]">
+<div className="relative aspect-[4/5]">
                   <img
-                    src="/images/jyothi-vardhan.png"
+                    src="/profile-photo.jpeg"
                     alt={`Portrait of ${profile.name}`}
-                    className="h-full w-full object-cover object-[50%_10%]"
+                    className="h-full w-full object-cover object-[50%_18%]"
                   />
                   {/* grounded gradient */}
                   <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg via-bg/25 to-transparent" />
